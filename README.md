@@ -28,7 +28,7 @@ Plug("CodeGPT.nvim")
 The toplevel command is `:Chat`. The behavior is different depending on weather text is selected and/or arguments are passed.
 
 ### Completion
-* `:Chat` with trigger the `completion` command, this will try to complete the selected code snippet.
+* `:Chat` with text selection will trigger the `completion` command, ChatGPT will try to complete the selected code snippet.
 ![completion](examples/completion.gif?raw=true)
 
 ### Code Edit
@@ -36,11 +36,11 @@ The toplevel command is `:Chat`. The behavior is different depending on weather 
 ![code_edit](examples/code_edit.gif?raw=true)
 
 ### Code Edit
-* `:Chat <command>` if there is only one argument and that argument matches a command, it will invoke that command with any given text selection. In the below example `:Chat tests` will attempt to units for the selected code.
+* `:Chat <command>` if there is only one argument and that argument matches a command, it will invoke that command with the given text selection. In the below example `:Chat tests` will attempt to write units for the selected code.
 ![tests](examples/tests.gif?raw=true)
 
 ### Chat
-* `:Chat hello world` without selection will trigger the `chat` command. This will send the arguments `hello world` to ChatGPT and show the results in a popup.
+* `:Chat hello world` without any text selection will trigger the `chat` command. This will send the arguments `hello world` to ChatGPT and show the results in a popup.
 ![chat](examples/chat.gif?raw=true)
 
 
