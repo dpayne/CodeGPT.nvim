@@ -12,7 +12,7 @@ Installing with packer.
 ```
 use("nvim-lua/plenary.nvim")
 use("MunifTanjim/nui.nvim")
-use("CodeGPT.nvim")
+use("dpayne/CodeGPT.nvim")
 ```
 
 Installing with plugged.
@@ -20,7 +20,7 @@ Installing with plugged.
 ```
 Plug("nvim-lua/plenary.nvim")
 Plug("MunifTanjim/nui.nvim")
-Plug("CodeGPT.nvim")
+Plug("dpayne/CodeGPT.nvim")
 ```
 
 ## Commands
