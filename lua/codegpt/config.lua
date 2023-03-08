@@ -4,6 +4,9 @@ vim.g["codegpt_chat_completions_url"] = "https://api.openai.com/v1/chat/completi
 -- clears visual selection after completion
 vim.g["codegpt_clear_visual_selection"] = true
 
+-- Wraps the text on the popup window
+vim.g["codegpt_wrap_popup_text"] = true
+
 vim.g["codegpt_commands_defaults"] = {
 ["completion"] = {
     user_message_template = "I have the following {{language}} code snippet: ```{{filetype}}\n{{text_selection}}```\nComplete the rest. Use best practices and write really good documentation. {{language_instructions}} Only return the code snippet and nothing else.",
