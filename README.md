@@ -9,7 +9,7 @@ CodeGPT a plugin for neovim that provides commands to interact with ChatGPT. The
 
 Installing with packer.
 
-```
+```lua
 use("nvim-lua/plenary.nvim")
 use("MunifTanjim/nui.nvim")
 use("dpayne/CodeGPT.nvim")
@@ -17,7 +17,7 @@ use("dpayne/CodeGPT.nvim")
 
 Installing with plugged.
 
-```
+```vim
 Plug("nvim-lua/plenary.nvim")
 Plug("MunifTanjim/nui.nvim")
 Plug("dpayne/CodeGPT.nvim")
@@ -61,9 +61,10 @@ A full list of predefined commands are below
 
 The configuration option `vim.g["codegpt_commands_defaults"] = {}` can be used to override command configurations. This is a lua table with a list of commands and the options you want to override.
 
-```vim.g["codegpt_commands_defaults"] = {
-["completion"] = {
-    user_message_template = "This is a template of the message passed to chat gpt. Hello, the code snippet is {{text_selection}}."
+```lua
+vim.g["codegpt_commands_defaults"] = {
+  ["completion"] = {
+      user_message_template = "This is a template of the message passed to chat gpt. Hello, the code snippet is {{text_selection}}."
 }
 ```
 The above, overrides the message template for the `completion` command.
@@ -84,15 +85,16 @@ A full list of overrides
 
 Some commands have templates that use the `{{language_instructions}}` macro to allow for additional instructions for specific [filetypes](https://neovim.io/doc/user/filetype.html).
 
-```
+```lua
 vim.g["codegpt_commands_defaults"] = {
-["completion"] = {
-    language_instructions = {
-        cpp = "Use trailing return type.",
-    },
-}
+  ["completion"] = {
+      language_instructions = {
+          cpp = "Use trailing return type.",
+      },
+  }
 }
 ```
+
 The above adds a specific `Use trailing return type.` to the command `completion` for the filetype `cpp`.
 
 
@@ -102,14 +104,14 @@ The above adds a specific `Use trailing return type.` to the command `completion
 
 Custom commands can be added to the `vim.g["codegpt_commands"]` configuration option to extend the available commands.
 
-```
+```lua
 vim.g["codegpt_commands"] = {
-["modernize"] = {
-    user_message_template = "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nModernize the above code. Use current best practices. Only return the code snippet and comments. {{language_instructions}}",
-    language_instructions = {
-        cpp = "Refactor the code to use trailing return type, and the auto keyword where applicable.",
-    },
-}
+  ["modernize"] = {
+      user_message_template = "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nModernize the above code. Use current best practices. Only return the code snippet and comments. {{language_instructions}}",
+      language_instructions = {
+          cpp = "Refactor the code to use trailing return type, and the auto keyword where applicable.",
+      },
+  }
 }
 ```
 The above configuration adds the command `:Chat modernize` that attempts modernize the selected code snippet.
@@ -118,7 +120,8 @@ The above configuration adds the command `:Chat modernize` that attempts moderni
 ##  Command Defaults
 
 The default command configuration is
-```
+
+```lua
 {
     model = "gpt-3.5-turbo",
     max_tokens = 4096,
@@ -155,8 +158,7 @@ Callback types controls what to do with the response
 
 Note CodeGPT should work without any configuration. This is an example configuration that shows some of the options available.
 
-```
-lua
+``` lua
 
 require("codegpt.config")
 
@@ -164,22 +166,22 @@ require("codegpt.config")
 -- vim.g["codegpt_chat_completions_url"] = "http://127.0.0.1:800/test"
 
 vim.g["codegpt_commands"] = {
-["tests"] = {
-	-- Language specific instructions for java filetype
+  ["tests"] = {
+    -- Language specific instructions for java filetype
     language_instructions = {
         java = "Use the TestNG framework.",
     },
-},
-["doc"] = {
-	-- Language specific instructions for python filetype
+  },
+  ["doc"] = {
+    -- Language specific instructions for python filetype
     language_instructions = {
         python = "Use the Google style docstrings."
     },
 
     -- Overrides the max tokens to be 1024
     max_tokens = 1024,
-},
-["code_edit"] = {
+  },
+  ["code_edit"] = {
     -- Overrides the system message template
     system_message_template = "You are {{language}} developer.",
 
@@ -188,14 +190,14 @@ vim.g["codegpt_commands"] = {
 
     -- Display the response in a popup window. The popup window filetype will be the filetype of the current buffer.
     callback_type = "code_popup",
-},
--- Custom command
-["modernize"] = {
+  },
+  -- Custom command
+  ["modernize"] = {
     user_message_template = "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nModernize the above code. Use current best practices. Only return the code snippet and comments. {{language_instructions}}",
     language_instructions = {
         cpp = "Use modern C++ syntax. Use auto where possible. Do not import std. Use trailing return type. Use the c++11, c++14, c++17, and c++20 standards where applicable.",
     },
-}
+  }
 }
 
 ```
