@@ -25,7 +25,7 @@ Plug("CodeGPT.nvim")
 
 ## Commands
 
-The toplevel command is `:Chat`. The behavior is different depending on weather text is selected and/or arguments are passed.
+The top-level command is `:Chat`. The behavior is different depending on whether text is selected and/or arguments are passed.
 
 ### Completion
 * `:Chat` with text selection will trigger the `completion` command, ChatGPT will try to complete the selected code snippet.
@@ -153,7 +153,7 @@ Callback types controls what to do with the response
 
 # Example Configuration
 
-Note CodeGPT should work without any configuration. This is an example configuration that shows some of the options avaiable.
+Note CodeGPT should work without any configuration. This is an example configuration that shows some of the options available.
 
 ```
 lua
