@@ -135,6 +135,29 @@ The default command configuration is
 
 ## More Configuration Options
 
+### Disable wrapping of text in popup window
+
+``` lua
+-- Disables wrapping the text in the popup window. Default is true.
+vim.g["codegpt_wrap_popup_text"] = false
+```
+
+### Move completion to popup window
+
+For any command, you can override the callback type to move the completion to a popup window. An example below is for overring the `completion` command.
+
+```lua
+require("codegpt.config")
+
+vim.g["codegpt_commands"] = {
+["completion"] = {
+    callback_type = "code_popup",
+},
+}
+```
+
+### Miscellaneous Configuration Options
+
 ``` lua
 
 -- Open API key and api endpoint
@@ -143,9 +166,6 @@ vim.g["codegpt_chat_completions_url"] = "https://api.openai.com/v1/chat/completi
 
 -- clears visual selection after completion
 vim.g["codegpt_clear_visual_selection"] = true
-
--- Wraps the text for all filetypes in the popup window, this overrides the above setting
-vim.g["codegpt_wrap_popup_text"] = true
 ```
 
 ## Callback Types
