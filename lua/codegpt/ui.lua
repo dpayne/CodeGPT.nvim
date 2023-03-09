@@ -14,6 +14,9 @@ local popup = Popup({
     width = "80%",
     height = "60%",
   },
+  win_options = {
+    wrap = vim.g["codegpt_wrap_popup_text"]
+  },
 })
 
 function Ui.popup(lines, filetype)
