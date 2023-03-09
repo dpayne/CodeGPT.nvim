@@ -133,6 +133,20 @@ The default command configuration is
 }
 ```
 
+## More Configuration Options
+
+``` lua
+
+-- Open API key and api endpoint
+vim.g["codegpt_openai_api_key"] = os.getenv("OPENAI_API_KEY")
+vim.g["codegpt_chat_completions_url"] = "https://api.openai.com/v1/chat/completions"
+
+-- clears visual selection after completion
+vim.g["codegpt_clear_visual_selection"] = true
+
+-- Wraps the text for all filetypes in the popup window, this overrides the above setting
+vim.g["codegpt_wrap_popup_text"] = true
+```
 
 ## Callback Types
 Callback types controls what to do with the response
