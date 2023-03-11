@@ -1,4 +1,6 @@
-vim.g["codegpt_openai_api_key"] = os.getenv("OPENAI_API_KEY")
+if os.getenv("OPENAI_API_KEY") ~= nil then
+    vim.g["codegpt_openai_api_key"] = os.getenv("OPENAI_API_KEY")
+end
 vim.g["codegpt_chat_completions_url"] = "https://api.openai.com/v1/chat/completions"
 
 -- clears visual selection after completion
