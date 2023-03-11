@@ -1,11 +1,11 @@
 # CodeGPT.nvim
 
-CodeGPT a plugin for neovim that provides commands to interact with ChatGPT. The focus is around code related usages, so code completion, refactorings, generating docs, etc.
+CodeGPT is a plugin for neovim that provides commands to interact with ChatGPT. The focus is around code related usages. So code completion, refactorings, generating docs, etc.
 
 ## Installation
 
 * Set environment variable `OPENAI_API_KEY` to your [openai api key](https://platform.openai.com/account/api-keys).
-* The plugins plenary and nui are also required.
+* The plugins 'plenary' and 'nui' are also required.
 
 Installing with packer.
 
@@ -119,7 +119,7 @@ The above configuration adds the command `:Chat modernize` that attempts moderni
 
 ##  Command Defaults
 
-The default command configuration is
+The default command configuration is:
 
 ```lua
 {
@@ -144,7 +144,7 @@ vim.g["codegpt_wrap_popup_text"] = false
 
 ### Move completion to popup window
 
-For any command, you can override the callback type to move the completion to a popup window. An example below is for overring the `completion` command.
+For any command, you can override the callback type to move the completion to a popup window. An example below is for overriding the `completion` command.
 
 ```lua
 require("codegpt.config")
@@ -169,7 +169,7 @@ vim.g["codegpt_clear_visual_selection"] = true
 ```
 
 ## Callback Types
-Callback types controls what to do with the response
+Callback types control what to do with the response
 
 | name      | Description |
 |--------------|----------|
@@ -190,7 +190,8 @@ Callback types controls what to do with the response
 
 # Example Configuration
 
-Note CodeGPT should work without any configuration. This is an example configuration that shows some of the options available.
+Note that CodeGPT should work without any configuration. 
+This is an example configuration that shows some of the options available:
 
 ``` lua
 
@@ -237,6 +238,6 @@ vim.g["codegpt_commands"] = {
 ```
 
 # Goals
-* Code related usages
-* Simple
-* Easy to add custom commands
+* Code related usages.
+* Simple.
+* Easy to add custom commands.
