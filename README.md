@@ -191,7 +191,7 @@ Callback types control what to do with the response
 # Example Configuration
 
 Note that CodeGPT should work without any configuration. 
-This is an example configuration that shows some of the options available.
+This is an example configuration that shows some of the options available:
 
 ``` lua
 
