@@ -81,6 +81,20 @@ A full list of overrides
 | callback_type | "replace_lines" | Controls what the plugin does with the response |
 | language_instructions | {} | A table of filetype => instructions. The current buffer's filetype is used in this lookup. This is useful trigger different instructions for different languages. |
 
+
+#### Templates
+
+The `system_message_template` and the `user_message_template` can contain template macros. For example:
+
+| macro | description |
+|------|-------------|
+| `{{filetype}}` | The `filetype` of the current buffer. |
+| `{{text_selection}}` | The selected text in the current buffer. |
+| `{{language}}` | The name of the programming language in the current buffer. |
+| `{{command_args}}` | Everything passed to the command as an argument, joined with spaces. See below. |
+| `{{language_instructions}}` | The found value in the `language_instructions` map. See below. |
+
+
 #### Language Instructions
 
 Some commands have templates that use the `{{language_instructions}}` macro to allow for additional instructions for specific [filetypes](https://neovim.io/doc/user/filetype.html).
@@ -97,6 +111,22 @@ vim.g["codegpt_commands_defaults"] = {
 
 The above adds a specific `Use trailing return type.` to the command `completion` for the filetype `cpp`.
 
+
+#### Command Args
+
+Commands are normally a single value, for example `:Chat completion`. Normally, a command such as `:Chat completion value` will be interpreted as a `code_edit` command, with the arguments `"completion value"`, and not `completion` with `"value"`. You can make commands accept additional arguments by using the `{{command_args}}` macro anywhere in either `user_message_template` or `system_message_template`. For example:
+
+```lua
+vim.g["codegpt_commands"] = {
+  ["testwith"] = {
+      user_message_template = 
+        "Write tests for the following code: ```{{filetype}}\n{{text_selection}}```\n{{command_args}} " ..
+        "Only return the code snippet and nothing else."
+  }
+}
+```
+
+After defining this command, any `:Chat` command that has `testwith` as its first argument will be handled. For example, `:Chat testwith some additional instructions` will be interpreted as `testwith` with `"some additional instructions"`.
 
 
 ## Custom Commands

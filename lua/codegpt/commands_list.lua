@@ -34,7 +34,7 @@ function CommandsList.get_cmd_opts(cmd)
     end
 
     if opts == nil and user_set_opts == nil then
-        error("No command options set")
+        return nil
     elseif opts == nil then
         opts = {}
     elseif user_set_opts == nil then
