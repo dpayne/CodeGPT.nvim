@@ -2,6 +2,14 @@ local curl = require("plenary.curl")
 local Providers = require("codegpt.providers")
 local OpenAIApi = {}
 
+local function remove_by_key(t, k)
+	for i, v in ipairs(t) do
+		if v == k then
+			t[i] = nil
+		end
+	end
+end
+
 local function curl_callback(response, cb, request_id)
 	local status = response.status
 	local body = response.body
@@ -20,9 +28,9 @@ local function curl_callback(response, cb, request_id)
 		Providers.get_provider().handle_response(json, cb)
 	end)(body)
 
-	vim.g["codegpt_hooks"]["request_finished"]()
+	remove_by_key(require("CodeGPT").loading_state, request_id)
 
-	table.remove(require("CodeGPT").loading_state, request_id)
+	vim.g["codegpt_hooks"]["request_finished"]()
 end
 
 local function random_unique_id()
