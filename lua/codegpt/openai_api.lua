@@ -2,7 +2,7 @@ local curl = require("plenary.curl")
 local Providers = require("codegpt.providers")
 local OpenAIApi = {}
 
-local function curl_callback(response, cb)
+local function curl_callback(response, cb, request_id)
 	local status = response.status
 	local body = response.body
 	if status ~= 200 then
@@ -19,6 +19,8 @@ local function curl_callback(response, cb)
 		local json = vim.fn.json_decode(msg)
 		Providers.get_provider().handle_response(json, cb)
 	end)(body)
+
+	vim.g["codegpt_hooks"]["request_finished"]()
 
 	table.remove(require("CodeGPT").loading_state, request_id)
 end
@@ -38,6 +40,8 @@ function OpenAIApi.make_call(payload, cb)
 
 	local request_id = random_unique_id()
 	table.insert(require("CodeGPT").loading_state, request_id)
+
+	vim.g["codegpt_hooks"]["request_started"]()
 
 	curl.post(url, {
 		body = payload_str,
