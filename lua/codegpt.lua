@@ -7,9 +7,9 @@ CodeGptModule.loading_state = {}
 
 function CodeGptModule.status()
 	if next(CodeGptModule.loading_state) == nil then
-		return "CodeGpt: Ready  "
+		return vim.g["codegpt_state_ready_string"]
 	else
-		return "CodeGpt: Loading"
+		return vim.g["codegpt_state_loading_string"]
 	end
 end
 
