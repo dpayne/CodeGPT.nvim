@@ -54,4 +54,39 @@ function Utils.replace_lines(lines)
   vim.api.nvim_buf_set_text(bufnr, start_row, start_col, end_row, end_col, lines)
 end
 
+local function get_code_block(lines2)
+  local code_block = {}
+  local in_code_block = false
+  for _, line in ipairs(lines2) do
+    if line:match("^```") then
+      in_code_block = not in_code_block
+    elseif in_code_block then
+      table.insert(code_block, line)
+    end
+  end
+  return code_block
+end
+
+local function contains_code_block(lines2)
+  for _, line in ipairs(lines2) do
+    if line:match("^```") then
+      return true
+    end
+  end
+  return false
+end
+
+function Utils.parse_lines(response_text)
+  if vim.g["codegpt_write_response_to_err_log"] then
+    vim.api.nvim_err_write("ChatGPT response: \n" .. response_text .. "\n")
+  end
+
+  local lines = vim.fn.split(response_text, "\n")
+  if contains_code_block(lines) then
+    return get_code_block(lines)
+  end
+
+  return lines
+end
+
 return Utils

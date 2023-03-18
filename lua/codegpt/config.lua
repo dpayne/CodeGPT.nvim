@@ -3,6 +3,9 @@ if os.getenv("OPENAI_API_KEY") ~= nil then
 end
 vim.g["codegpt_chat_completions_url"] = "https://api.openai.com/v1/chat/completions"
 
+-- alternative provider
+vim.g["codegpt_openai_api_provider"] = "OpenAI"
+
 -- clears visual selection after completion
 vim.g["codegpt_clear_visual_selection"] = true
 
