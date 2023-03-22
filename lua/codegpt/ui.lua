@@ -28,6 +28,9 @@ function Ui.popup(lines, filetype)
     popup:unmount()
   end)
 
+  -- unmount component when key 'q'
+  popup:map('n', 'q', function() popup:unmount() end, { noremap = true, silent = true })
+
   -- set content
   vim.api.nvim_buf_set_option(popup.bufnr, "filetype", filetype)
   vim.api.nvim_buf_set_lines(popup.bufnr, 0, 1, false, lines)
