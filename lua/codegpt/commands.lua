@@ -18,4 +18,8 @@ function Commands.run_cmd(command, command_args, text_selection)
 	OpenAiApi.make_call(request, cmd_opts.callback)
 end
 
+function Commands.get_status(...)
+	return OpenAiApi.get_status(...)
+end
+
 return Commands

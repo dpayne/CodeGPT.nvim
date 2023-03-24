@@ -119,7 +119,7 @@ Commands are normally a single value, for example `:Chat completion`. Normally, 
 ```lua
 vim.g["codegpt_commands"] = {
   ["testwith"] = {
-      user_message_template = 
+      user_message_template =
         "Write tests for the following code: ```{{filetype}}\n{{text_selection}}```\n{{command_args}} " ..
         "Only return the code snippet and nothing else."
   }
@@ -164,6 +164,38 @@ The default command configuration is:
 ```
 
 ## More Configuration Options
+
+### Custom status hooks
+
+You can add custom hooks to update your status line or other ui elements.
+
+```lua
+vim.g["codegpt_hooks"] = {
+	request_started = function()
+		-- update some ui
+	end,
+
+	request_finished = function()
+		-- update some ui
+	end,
+}
+```
+
+### Lualine Status Component
+
+There is a convenience function `get_status` so that you can add a status component to lualine.
+
+```lua
+local CodeGPTModule = require("codegpt")
+
+require('lualine').setup({
+    sections = {
+        -- ...
+        lualine_x = { CodeGPTModule.get_status, "encoding", "fileformat" },
+        -- ...
+    }
+})
+```
 
 ### Disable wrapping of text in popup window
 
@@ -221,7 +253,7 @@ Callback types control what to do with the response
 
 # Example Configuration
 
-Note that CodeGPT should work without any configuration. 
+Note that CodeGPT should work without any configuration.
 This is an example configuration that shows some of the options available:
 
 ``` lua

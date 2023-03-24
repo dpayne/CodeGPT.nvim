@@ -9,14 +9,8 @@ local function has_command_args(opts)
 		or string.find(opts.system_template_message or "", pattern)
 end
 
-CodeGptModule.loading_state = {}
-
-function CodeGptModule.status()
-	if next(CodeGptModule.loading_state) == nil then
-		return vim.g["codegpt_state_ready_string"]
-	else
-		return vim.g["codegpt_state_loading_string"]
-	end
+function CodeGptModule.get_status(...)
+	return Commands.get_status(...)
 end
 
 function CodeGptModule.run_cmd(opts)

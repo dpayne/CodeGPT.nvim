@@ -9,17 +9,9 @@ vim.g["codegpt_openai_api_provider"] = "OpenAI"
 -- clears visual selection after completion
 vim.g["codegpt_clear_visual_selection"] = true
 
-vim.g["codegpt_state_loading_string"] = "GPT: loading"
-vim.g["codegpt_state_ready_string"] = "GPT: ready"
-
 vim.g["codegpt_hooks"] = {
-	request_started = function()
-		-- update some ui, start a spinner
-	end,
-
-	request_finished = function()
-		-- update some ui, stop the spinner
-	end,
+	request_started = nil,
+	request_finished = nil,
 }
 
 -- Wraps the text on the popup window
