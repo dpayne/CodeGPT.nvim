@@ -62,3 +62,11 @@ vim.g["codegpt_commands_defaults"] = {
 		callback_type = "text_popup",
 	},
 }
+
+-- Popup commands
+vim.g["codegpt_ui_commands"] = {
+  quit = 'q',
+  use_as_output = '<c-o>',
+  use_as_input = '<c-i>'
+}
+vim.g["codegpt_ui_custom_commands"] = {}
