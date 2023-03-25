@@ -58,7 +58,7 @@ local function curl_callback(response, cb)
 	run_finished_hook()
 end
 
-function OpenAIApi.make_call(payload, cb, selection)
+function OpenAIApi.make_call(payload, cb)
 	local payload_str = vim.fn.json_encode(payload)
 	local url = vim.g["codegpt_chat_completions_url"]
 	local headers = Providers.get_provider().make_headers()
@@ -69,7 +69,7 @@ function OpenAIApi.make_call(payload, cb, selection)
 		body = payload_str,
 		headers = headers,
 		callback = function(response)
-			curl_callback(response, cb, selection)
+			curl_callback(response, cb)
 		end,
 	})
 end
