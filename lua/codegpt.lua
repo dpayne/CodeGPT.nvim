@@ -6,7 +6,11 @@ local CodeGptModule = {}
 local function has_command_args(opts)
 	local pattern = "%{%{command_args%}%}"
 	return string.find(opts.user_template_message or "", pattern)
-      or string.find(opts.system_template_message or "", pattern)
+		or string.find(opts.system_template_message or "", pattern)
+end
+
+function CodeGptModule.get_status(...)
+	return Commands.get_status(...)
 end
 
 function CodeGptModule.run_cmd(opts)
@@ -31,10 +35,10 @@ function CodeGptModule.run_cmd(opts)
 	end
 
 	if command == nil or command == "" then
-    vim.notify("No command or text selection provided", vim.log.levels.ERROR, {
-      title = "CodeGPT"
-    })
-    return
+		vim.notify("No command or text selection provided", vim.log.levels.ERROR, {
+			title = "CodeGPT",
+		})
+		return
 	end
 
 	Commands.run_cmd(command, command_args, text_selection)
