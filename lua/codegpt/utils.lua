@@ -87,4 +87,24 @@ function Utils.parse_lines(response_text)
 	return lines
 end
 
+function Utils.fix_indentation(bufnr, start_row, end_row, new_lines)
+  local original_lines = vim.api.nvim_buf_get_lines(bufnr, start_row, end_row, true)
+  local min_indentation = math.huge
+  local original_identation = ""
+
+  -- Find the minimum indentation of any line in original_lines
+  for _, line in ipairs(original_lines) do
+    local indentation = string.match(line, "^%s*")
+    if #indentation < min_indentation then
+      min_indentation = #indentation
+      original_identation = indentation
+    end
+  end
+
+  -- Change the existing lines in new_lines by adding the old identation
+  for i, line in ipairs(new_lines) do
+    new_lines[i] = original_identation .. line
+  end
+end
+
 return Utils
