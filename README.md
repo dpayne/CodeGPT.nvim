@@ -197,14 +197,45 @@ require('lualine').setup({
 })
 ```
 
-### Disable wrapping of text in popup window
+### Popup options
+
+#### Popup commands
+
+```lua
+vim.g["codegpt_ui_commands"] = {
+  -- some default commands, you can remap the keys
+  quit = "q", -- key to quit the popup
+  use_as_output = "<c-o>", -- key to use the popup content as output and replace the original lines
+  use_as_input = "<c-i>", -- key to use the popup content as input for a new API request
+}
+vim.g["codegpt_ui_commands"] = {
+  -- tables as defined by nui.nvim https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/popup#popupmap
+  {"n", "<c-l>", function() print("do something") end, {noremap = false, silent = false}}
+}
+```
+
+#### Popup layouts
+
+```lua
+vim.g["codegpt_popup_options"] = {
+  -- a table as defined by nui.nvim https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/popup#popupupdate_layout
+  relative = "editor",
+  position = "50%",
+  size = {
+    width = "80%",
+    height = "80%"
+  }
+}
+```
+
+#### Disable wrapping of text in popup window
 
 ``` lua
 -- Disables wrapping the text in the popup window. Default is true.
 vim.g["codegpt_wrap_popup_text"] = false
 ```
 
-### Move completion to popup window
+#### Move completion to popup window
 
 For any command, you can override the callback type to move the completion to a popup window. An example below is for overriding the `completion` command.
 
