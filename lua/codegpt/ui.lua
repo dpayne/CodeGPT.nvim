@@ -20,6 +20,8 @@ local popup = Popup({
 })
 
 function Ui.popup(lines, filetype, bufnr, start_row, start_col, end_row, end_col)
+  popup:update_layout(vim.g["codegpt_popup_options"])
+
   -- mount/open the component
   popup:mount()
 
