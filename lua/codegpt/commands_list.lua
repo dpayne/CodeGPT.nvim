@@ -20,7 +20,12 @@ CommandsList.CallbackTypes = {
     Ui.popup(lines, Utils.get_filetype(), bufnr, start_row, start_col, end_row, end_col)
   end,
   ["replace_lines"] = function(lines, bufnr, start_row, start_col, end_row, end_col)
-    Utils.replace_lines(lines, bufnr, start_row, start_col, end_row, end_col)
+    if vim.api.nvim_buf_is_valid(bufnr) == true then
+        Utils.replace_lines(lines, bufnr, start_row, start_col, end_row, end_col)
+    else
+        -- if the buffer is not valid, open a popup. This can happen when the user closes the previous popup window before the request is finished.
+        Ui.popup(lines, Utils.get_filetype(), bufnr, start_row, start_col, end_row, end_col)
+    end
   end,
   ["custom"] = nil,
 }
