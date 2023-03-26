@@ -167,17 +167,16 @@ The default command configuration is:
 
 ### Custom status hooks
 
-You can add custom hooks to update your status line or other ui elements.
+You can add custom hooks to update your status line or other ui elements, for example, this code updates the status line colour to yellow whilst the request is in progress.
 
 ```lua
 vim.g["codegpt_hooks"] = {
 	request_started = function()
-		-- update some ui
+		vim.cmd("hi StatusLine ctermbg=NONE ctermfg=yellow")
 	end,
-
-	request_finished = function()
-		-- update some ui
-	end,
+  request_finished = vim.schedule_wrap(function()
+		vim.cmd("hi StatusLine ctermbg=NONE ctermfg=NONE")
+	end)
 }
 ```
 
