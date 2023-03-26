@@ -95,7 +95,7 @@ function Utils.fix_indentation(bufnr, start_row, end_row, new_lines)
   -- Find the minimum indentation of any line in original_lines
   for _, line in ipairs(original_lines) do
     local indentation = string.match(line, "^%s*")
-    if #indentation < min_indentation and #indentation > 0 then
+    if #indentation < min_indentation then
       min_indentation = #indentation
       original_identation = indentation
     end
