@@ -101,8 +101,6 @@ function Utils.fix_indentation(bufnr, start_row, end_row, new_lines)
     end
   end
 
-  print("orig:" .. original_identation .. ".")
-
   -- Change the existing lines in new_lines by adding the old identation
   for i, line in ipairs(new_lines) do
     new_lines[i] = original_identation .. line

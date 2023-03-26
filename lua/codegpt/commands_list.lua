@@ -14,7 +14,6 @@ local cmd_default = {
 
 CommandsList.CallbackTypes = {
   ["text_popup"] = function(lines, bufnr, start_row, start_col, end_row, end_col)
-    -- lines in bufnr from start_row, start_col to end_row, end_col
     Utils.fix_indentation(bufnr, start_row, end_row, lines)
     Ui.popup(lines, "text", bufnr, start_row, start_col, end_row, end_col)
   end,
