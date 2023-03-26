@@ -48,9 +48,7 @@ function Utils.insert_lines(lines)
 	vim.api.nvim_win_set_cursor(0, { line + #lines, 0 })
 end
 
-function Utils.replace_lines(lines)
-	local bufnr = vim.api.nvim_get_current_buf()
-	local start_row, start_col, end_row, end_col = Utils.get_visual_selection()
+function Utils.replace_lines(lines, bufnr, start_row, start_col, end_row, end_col)
 	vim.api.nvim_buf_set_text(bufnr, start_row, start_col, end_row, end_col, lines)
 end
 
