@@ -14,12 +14,15 @@ local cmd_default = {
 
 CommandsList.CallbackTypes = {
   ["text_popup"] = function(lines, bufnr, start_row, start_col, end_row, end_col)
+    Utils.fix_indentation(bufnr, start_row, end_row, lines)
     Ui.popup(lines, "text", bufnr, start_row, start_col, end_row, end_col)
   end,
   ["code_popup"] = function(lines, bufnr, start_row, start_col, end_row, end_col)
+    Utils.fix_indentation(bufnr, start_row, end_row, lines)
     Ui.popup(lines, Utils.get_filetype(), bufnr, start_row, start_col, end_row, end_col)
   end,
   ["replace_lines"] = function(lines, bufnr, start_row, start_col, end_row, end_col)
+    Utils.fix_indentation(bufnr, start_row, end_row, lines)
     if vim.api.nvim_buf_is_valid(bufnr) == true then
         Utils.replace_lines(lines, bufnr, start_row, start_col, end_row, end_col)
     else
