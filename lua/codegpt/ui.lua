@@ -3,58 +3,60 @@ local event = require("nui.utils.autocmd").event
 
 local Ui = {}
 
-local popup = Popup({
-	enter = true,
-	focusable = true,
-	border = {
-		style = "rounded",
-	},
-	position = "50%",
-	size = {
-		width = "80%",
-		height = "60%",
-	},
-	win_options = {
-		wrap = vim.g["codegpt_wrap_popup_text"],
-	},
-})
+local popup
 
 function Ui.popup(lines, filetype, bufnr, start_row, start_col, end_row, end_col)
-  popup:update_layout(vim.g["codegpt_popup_options"])
+	if not popup then
+		popup = Popup({
+			enter = true,
+			focusable = true,
+			border = vim.g["codegpt_popup_border"],
+			position = "50%",
+			size = {
+				width = "80%",
+				height = "60%",
+			},
+			win_options = {
+				wrap = vim.g["codegpt_wrap_popup_text"],
+			},
+		})
+	end
 
-  -- mount/open the component
-  popup:mount()
+	popup:update_layout(vim.g["codegpt_popup_options"])
 
-  -- unmount component when cursor leaves buffer
-  popup:on(event.BufLeave, function()
-    popup:unmount()
-  end)
+	-- mount/open the component
+	popup:mount()
 
-  -- unmount component when key 'q'
-  popup:map("n", vim.g["codegpt_ui_commands"].quit, function()
-    popup:unmount()
-  end, { noremap = true, silent = true })
+	-- unmount component when cursor leaves buffer
+	popup:on(event.BufLeave, function()
+		popup:unmount()
+	end)
 
-  -- set content
-  vim.api.nvim_buf_set_option(popup.bufnr, "filetype", filetype)
-  vim.api.nvim_buf_set_lines(popup.bufnr, 0, 1, false, lines)
+	-- unmount component when key 'q'
+	popup:map("n", vim.g["codegpt_ui_commands"].quit, function()
+		popup:unmount()
+	end, { noremap = true, silent = true })
 
-  -- replace lines when ctrl-o pressed
-  popup:map("n", vim.g["codegpt_ui_commands"].use_as_output, function()
-    vim.api.nvim_buf_set_text(bufnr, start_row, start_col, end_row, end_col, lines)
-    popup:unmount()
-  end)
+	-- set content
+	vim.api.nvim_buf_set_option(popup.bufnr, "filetype", filetype)
+	vim.api.nvim_buf_set_lines(popup.bufnr, 0, 1, false, lines)
 
-  -- selecting all the content when ctrl-i is pressed
-  -- so the user can proceed with another API request
-  popup:map("n", vim.g["codegpt_ui_commands"].use_as_input, function()
-    vim.api.nvim_feedkeys('ggVG:Chat ', 'n', false)
-  end, { noremap = false })
+	-- replace lines when ctrl-o pressed
+	popup:map("n", vim.g["codegpt_ui_commands"].use_as_output, function()
+		vim.api.nvim_buf_set_text(bufnr, start_row, start_col, end_row, end_col, lines)
+		popup:unmount()
+	end)
 
-  -- mapping custom commands
-  for _, command in ipairs(vim.g.codegpt_ui_custom_commands) do
-    popup:map(command[1], command[2], command[3], command[4])
-  end
+	-- selecting all the content when ctrl-i is pressed
+	-- so the user can proceed with another API request
+	popup:map("n", vim.g["codegpt_ui_commands"].use_as_input, function()
+		vim.api.nvim_feedkeys("ggVG:Chat ", "n", false)
+	end, { noremap = false })
+
+	-- mapping custom commands
+	for _, command in ipairs(vim.g.codegpt_ui_custom_commands) do
+		popup:map(command[1], command[2], command[3], command[4])
+	end
 end
 
 return Ui

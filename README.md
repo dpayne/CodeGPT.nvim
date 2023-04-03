@@ -227,6 +227,14 @@ vim.g["codegpt_popup_options"] = {
 }
 ```
 
+#### Popup border
+
+```lua
+vim.g["codegpt_popup_border"] = {
+  -- a table as defined by nui.nvim https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/popup#border
+  style = "rounded"
+}
+```
 #### Disable wrapping of text in popup window
 
 ``` lua
