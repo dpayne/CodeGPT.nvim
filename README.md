@@ -7,6 +7,21 @@ CodeGPT is a plugin for neovim that provides commands to interact with ChatGPT. 
 * Set environment variable `OPENAI_API_KEY` to your [openai api key](https://platform.openai.com/account/api-keys).
 * The plugins 'plenary' and 'nui' are also required.
 
+Installing with Lazy.
+
+```lua
+{
+    "dpayne/CodeGPT.nvim",
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'MunifTanjim/nui.nvim',
+    },
+    config = function()
+        require("codegpt.config")
+    end
+}
+```
+
 Installing with packer.
 
 ```lua
