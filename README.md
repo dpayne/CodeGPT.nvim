@@ -66,6 +66,7 @@ A full list of predefined commands are below
 | completion |  text selection | Will ask ChatGPT to complete the selected code. |
 | code_edit  |  text selection and command args | Will ask ChatGPT to apply the given instructions (the command args) to the selected code. |
 | explain  |  text selection | Will ask ChatGPT to explain the selected code. |
+| question  |  text selection | Will pass the commands args to ChatGPT and return the answer in a text popup. |
 | doc  |  text selection | Will ask ChatGPT to document the selected code. |
 | opt  |  text selection | Will ask ChatGPT to optimize the selected code. |
 | tests  |  text selection | Will ask ChatGPT to write unit tests for the selected code. |
