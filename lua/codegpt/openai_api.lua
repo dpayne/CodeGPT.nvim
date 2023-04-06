@@ -60,7 +60,6 @@ end
 
 function OpenAIApi.make_call(payload, cb)
     local payload_str = vim.fn.json_encode(payload)
-    print(payload_str)
     local url = vim.g["codegpt_chat_completions_url"]
     local headers = Providers.get_provider().make_headers()
 

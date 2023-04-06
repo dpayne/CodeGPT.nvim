@@ -24,7 +24,11 @@ end
 
 function Render.render(cmd, template, command_args, text_selection, cmd_opts)
     local language = get_language()
-    local language_instructions = cmd_opts.language_instructions[Utils.get_filetype()]
+    local language_instructions = ""
+    if cmd_opts.language_instructions ~= nil then
+        language_instructions = cmd_opts.language_instructions[language]
+    end
+
     template = safe_replace(template, "{{filetype}}", Utils.get_filetype())
     template = safe_replace(template, "{{text_selection}}", text_selection)
     template = safe_replace(template, "{{language}}", language)
