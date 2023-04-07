@@ -20,6 +20,8 @@ vim.g["codegpt_popup_border"] = { style = "rounded" }
 -- Wraps the text on the popup window
 vim.g["codegpt_wrap_popup_text"] = true
 
+vim.g["codegpt_text_popup_filetype"] = "markdown"
+
 vim.g["codegpt_commands_defaults"] = {
     ["completion"] = {
         user_message_template = "I have the following {{language}} code snippet: ```{{filetype}}\n{{text_selection}}```\nComplete the rest. Use best practices and write really good documentation. {{language_instructions}} Only return the code snippet and nothing else.",
@@ -40,6 +42,10 @@ vim.g["codegpt_commands_defaults"] = {
     },
     ["question"] = {
         user_message_template = "I have a question about the following {{language}} code: ```{{filetype}}\n{{text_selection}}``` {{command_args}}",
+        callback_type = "text_popup",
+    },
+    ["debug"] = {
+        user_message_template = "Analyze the following {{language}} code for bugs: ```{{filetype}}\n{{text_selection}}```",
         callback_type = "text_popup",
     },
     ["doc"] = {

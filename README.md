@@ -67,6 +67,7 @@ A full list of predefined commands are below
 | code_edit  |  text selection and command args | Will ask ChatGPT to apply the given instructions (the command args) to the selected code. |
 | explain  |  text selection | Will ask ChatGPT to explain the selected code. |
 | question  |  text selection | Will pass the commands args to ChatGPT and return the answer in a text popup. |
+| debug  |  text selection | Will pass the code selectiont to ChatGPT analyze it for bugs, the results will be in a text popup. |
 | doc  |  text selection | Will ask ChatGPT to document the selected code. |
 | opt  |  text selection | Will ask ChatGPT to optimize the selected code. |
 | tests  |  text selection | Will ask ChatGPT to write unit tests for the selected code. |
@@ -213,6 +214,14 @@ require('lualine').setup({
 ```
 
 ### Popup options
+
+#### Popup commands
+
+The default filetype of the text popup window is markdown. You can change this by setting the `codegpt_popup_options` variable.
+
+```lua
+vim.g["codegpt_text_popup_filetype"] = "markdown"
+```
 
 #### Popup commands
 
