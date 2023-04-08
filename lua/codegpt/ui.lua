@@ -48,12 +48,23 @@ local function create_horizontal()
         split = Split({
             relative = "editor",
             position = "bottom",
-            size = "20%",
-            -- win_options = {
-            --     wrap = vim.g["codegpt_wrap_popup_text"],
-            -- },
+            size = vim.g["codegpt_horizontal_popup_size"],
         })
     end
+
+    return split
+end
+
+local function create_vertical()
+    if not split then
+        split = Split({
+            relative = "editor",
+            position = "right",
+            size = vim.g["codegpt_vertical_popup_size"],
+        })
+    end
+
+    return split
 end
 
 local function create_popup()
@@ -79,10 +90,12 @@ local function create_popup()
 end
 
 function Ui.popup(lines, filetype, bufnr, start_row, start_col, end_row, end_col)
-    local popup_type = vim.g["codegpt_text_popup_type"]
+    local popup_type = vim.g["codegpt_popup_type"]
     local ui_elem = nil
     if popup_type == "horizontal" then
         ui_elem = create_horizontal()
+    elseif popup_type == "vertical" then
+        ui_elem = create_vertical()
     else
         ui_elem = create_popup()
     end
