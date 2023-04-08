@@ -281,6 +281,21 @@ vim.g["codegpt_commands"] = {
 }
 ```
 
+### Horizontal or vertical split window
+If you prefer a horizontal or vertical split window, you can change the popup type to `horizontal` or `vertical`.
+
+```lua
+-- options are "horizontal", "vertical", or "popup". Default is "popup"
+vim.g["codegpt_popup_type"] = "horizontal"
+```
+
+To set the height of the horizontal window or the width of the vertical popup, you can use `codegpt_horizontal_popup_size` and `codegpt_horizontal_popup_size` variables.
+
+```lua
+vim.g["codegpt_horizontal_popup_size"] = "20%"
+vim.g["codegpt_vertical_popup_size"] = "20%"
+```
+
 ### Miscellaneous Configuration Options
 
 ``` lua

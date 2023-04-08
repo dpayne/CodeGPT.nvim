@@ -20,7 +20,17 @@ vim.g["codegpt_popup_border"] = { style = "rounded" }
 -- Wraps the text on the popup window
 vim.g["codegpt_wrap_popup_text"] = true
 
+-- set the filetype of a text popup is markdown
 vim.g["codegpt_text_popup_filetype"] = "markdown"
+
+-- Set the type of ui to use for the popup, options are "popup", "vertical" or "horizontal"
+vim.g["codegpt_popup_type"] = "popup"
+
+-- Set the height of the horizontal popup
+vim.g["codegpt_horizontal_popup_size"] = "20%"
+
+-- Set the width of the vertical popup
+vim.g["codegpt_vertical_popup_size"] = "20%"
 
 vim.g["codegpt_commands_defaults"] = {
     ["completion"] = {
