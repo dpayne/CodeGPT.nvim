@@ -78,12 +78,7 @@ local function create_popup()
                 width = "80%",
                 height = "60%",
             },
-            win_options = {
-                wrap = vim.g["codegpt_wrap_popup_text"],
-                linebreak = true,
-                relativenumber = true,
-                number = true,
-            },
+            win_options = vim.g["codegpt_popup_window_options"],
         })
     end
 

@@ -263,8 +263,13 @@ vim.g["codegpt_popup_border"] = {
 #### Disable wrapping of text in popup window
 
 ``` lua
--- Disables wrapping the text in the popup window. Default is true.
-vim.g["codegpt_wrap_popup_text"] = false
+-- Popup window options
+vim.g["codegpt_popup_window_options"] = {
+  wrap = vim.g["codegpt_wrap_popup_text"],
+  linebreak = true,
+  relativenumber = true,
+  number = true,
+}
 ```
 
 #### Move completion to popup window
@@ -275,9 +280,9 @@ For any command, you can override the callback type to move the completion to a 
 require("codegpt.config")
 
 vim.g["codegpt_commands"] = {
-["completion"] = {
+  ["completion"] = {
     callback_type = "code_popup",
-},
+  },
 }
 ```
 
