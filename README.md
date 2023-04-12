@@ -260,12 +260,12 @@ vim.g["codegpt_popup_border"] = {
   style = "rounded"
 }
 ```
-#### Disable wrapping of text in popup window
+#### Popup window options
 
 ``` lua
--- Popup window options
+-- Enable text wrapping and line numbers
 vim.g["codegpt_popup_window_options"] = {
-  wrap = vim.g["codegpt_wrap_popup_text"],
+  wrap = true,
   linebreak = true,
   relativenumber = true,
   number = true,
