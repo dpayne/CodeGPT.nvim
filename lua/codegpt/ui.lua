@@ -69,6 +69,16 @@ end
 
 local function create_popup()
     if not popup then
+        local window_options = vim.g["codegpt_popup_window_options"]
+        if window_options == nil then
+            window_options = {}
+        end
+
+        -- check the old wrap config variable and use it if it's not set
+        if window_options["wrap"] == nil then
+            window_options["wrap"] = vim.g["codegpt_wrap_popup_text"]
+        end
+
         popup = Popup({
             enter = true,
             focusable = true,
@@ -78,7 +88,7 @@ local function create_popup()
                 width = "80%",
                 height = "60%",
             },
-            win_options = vim.g["codegpt_popup_window_options"],
+            win_options = window_options,
         })
     end
 

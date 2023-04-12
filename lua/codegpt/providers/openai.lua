@@ -76,11 +76,11 @@ function OpenAIProvider.handle_response(json, cb)
                 print("Error: No response text " .. type(response_text))
             else
                 local bufnr = vim.api.nvim_get_current_buf()
-                cb(Utils.parse_lines(response_text))
                 if vim.g["codegpt_clear_visual_selection"] then
                     vim.api.nvim_buf_set_mark(bufnr, "<", 0, 0, {})
                     vim.api.nvim_buf_set_mark(bufnr, ">", 0, 0, {})
                 end
+                cb(Utils.parse_lines(response_text))
             end
         else
             print("Error: No message")
