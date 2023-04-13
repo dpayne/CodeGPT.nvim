@@ -20,11 +20,9 @@ CommandsList.CallbackTypes = {
     end,
     ["code_popup"] = function(lines, bufnr, start_row, start_col, end_row, end_col)
         Ui.popup(Utils.trim_to_code_block(lines), Utils.get_filetype(), bufnr, start_row, start_col, end_row, end_col)
-        Utils.fix_indentation(bufnr, start_row, end_row, lines)
     end,
     ["replace_lines"] = function(lines, bufnr, start_row, start_col, end_row, end_col)
         lines = Utils.trim_to_code_block(lines)
-        Utils.fix_indentation(bufnr, start_row, end_row, lines)
         if vim.api.nvim_buf_is_valid(bufnr) == true then
             Utils.replace_lines(lines, bufnr, start_row, start_col, end_row, end_col)
         else
