@@ -95,3 +95,5 @@ vim.g["codegpt_ui_commands"] = {
     use_as_input = "<c-i>",
 }
 vim.g["codegpt_ui_custom_commands"] = {}
+
+vim.g["codegpt_processing_sign"] = '🤖'
