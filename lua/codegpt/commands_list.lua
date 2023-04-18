@@ -15,7 +15,6 @@ local cmd_default = {
 CommandsList.CallbackTypes = {
     ["text_popup"] = function(lines, bufnr, start_row, start_col, end_row, end_col)
         local popup_filetype = vim.g["codegpt_text_popup_filetype"]
-        Utils.fix_indentation(bufnr, start_row, end_row, lines)
         Ui.popup(lines, popup_filetype, bufnr, start_row, start_col, end_row, end_col)
     end,
     ["code_popup"] = function(lines, bufnr, start_row, start_col, end_row, end_col)

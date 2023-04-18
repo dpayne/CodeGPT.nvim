@@ -6,6 +6,7 @@ CodeGPT is a plugin for neovim that provides commands to interact with ChatGPT. 
 
 * Set environment variable `OPENAI_API_KEY` to your [openai api key](https://platform.openai.com/account/api-keys).
 * The plugins 'plenary' and 'nui' are also required.
+* OpenAI's tokenizer [tiktoken](https://github.com/openai/tiktoken) is recommended for accurate token count estimate.
 
 Installing with Lazy.
 
@@ -36,6 +37,11 @@ Installing with plugged.
 Plug("nvim-lua/plenary.nvim")
 Plug("MunifTanjim/nui.nvim")
 Plug("dpayne/CodeGPT.nvim")
+```
+
+Installing OpenAI's tokenizer
+```sh
+pip install tiktoken
 ```
 
 ## Commands
