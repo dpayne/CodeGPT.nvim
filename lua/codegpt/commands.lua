@@ -23,11 +23,15 @@ function Commands.run_cmd(command, command_args, text_selection)
       sign_text = vim.g['codegpt_processing_sign']
   }
   local mark_id = vim.api.nvim_buf_set_extmark(bufnr, ns_id, start_row, start_col, extmark_opts)
-  local new_callback = function(lines)
-    vim.api.nvim_buf_del_extmark(bufnr, ns_id, mark_id)
+  local then_callback = function(lines)
     cmd_opts.callback(lines, bufnr, start_row, start_col, end_row, end_col)
   end
-  OpenAiApi.make_call(request, new_callback)
+  -- The finally_callback will be called even if an error occurs.
+  local finally_callback = function()
+      vim.api.nvim_buf_del_extmark(bufnr, ns_id, mark_id)
+  end
+
+  OpenAiApi.make_call(request, then_callback, finally_callback)
 end
 
 function Commands.get_status(...)
