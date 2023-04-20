@@ -71,6 +71,10 @@ function OpenAIApi.make_call(payload, cb)
         callback = function(response)
             curl_callback(response, cb)
         end,
+        on_error = function(err)
+            print('Error:', err.message)
+            run_finished_hook()
+        end,
     })
 end
 
