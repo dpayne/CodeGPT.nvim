@@ -26,9 +26,16 @@ Installing with Lazy.
 Installing with packer.
 
 ```lua
-use("nvim-lua/plenary.nvim")
-use("MunifTanjim/nui.nvim")
-use("dpayne/CodeGPT.nvim")
+use({
+   "dpayne/CodeGPT.nvim",
+   requires = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+   },
+   config = function()
+      require("codegpt.config")
+   end
+})
 ```
 
 Installing with plugged.
