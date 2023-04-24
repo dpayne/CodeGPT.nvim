@@ -27,10 +27,10 @@ Installing with packer.
 
 ```lua
 use({
-   "nvim-lua/plenary.nvim",
+   "dpayne/CodeGPT.nvim",
    requires = {
       "MunifTanjim/nui.nvim",
-      "dpayne/CodeGPT.nvim",
+      "nvim-lua/plenary.nvim",
    },
    config = function()
       require("codegpt.config")
