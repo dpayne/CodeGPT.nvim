@@ -109,4 +109,22 @@ function Utils.fix_indentation(bufnr, start_row, end_row, new_lines)
     end
 end
 
+function Utils.get_accurate_tokens(content)
+    local ok, result = pcall(
+        vim.api.nvim_exec,
+        string.format([[
+python3 << EOF
+import tiktoken
+encoder = tiktoken.get_encoding("cl100k_base")
+encoded = encoder.encode("""%s""")
+print(len(encoded))
+EOF
+]], content), true)
+    if ok then
+        return ok, tonumber(result)
+    end
+    return ok, 0
+end
+
+
 return Utils

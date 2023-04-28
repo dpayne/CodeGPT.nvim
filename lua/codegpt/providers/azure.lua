@@ -47,7 +47,10 @@ local function generate_messages(command, cmd_opts, command_args, text_selection
 end
 
 local function get_max_tokens_legacy(max_tokens, messages)
-    local total_length = string.len(messages)
+    local ok, total_length = Utils.get_accurate_tokens(messages)
+    if not ok then
+        total_length = string.len(messages)
+    end
 
     if total_length >= max_tokens then
         error("Total length of messages exceeds max_tokens: " .. total_length .. " > " .. max_tokens)
@@ -61,11 +64,13 @@ local function get_max_tokens(max_tokens, messages)
         return get_max_tokens_legacy(max_tokens, messages)
     end
 
-    local total_length = 0
+    local ok, total_length = Utils.get_accurate_tokens(vim.fn.json_encode(messages))
 
-    for _, message in ipairs(messages) do
-        total_length = total_length + string.len(message.content)
-        total_length = total_length + string.len(message.role)
+    if not ok then
+        for _, message in ipairs(messages) do
+            total_length = total_length + string.len(message.content)
+            total_length = total_length + string.len(message.role)
+        end
     end
 
     if total_length >= max_tokens then
