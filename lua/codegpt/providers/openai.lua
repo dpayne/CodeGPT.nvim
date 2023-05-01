@@ -21,19 +21,9 @@ local function generate_messages(command, cmd_opts, command_args, text_selection
 end
 
 local function get_max_tokens(max_tokens, messages)
-    local ok, result = pcall(vim.api.nvim_exec, string.format([[
-python3 << EOF
-import tiktoken
-encoder = tiktoken.get_encoding("cl100k_base")
-encoded = encoder.encode("""%s""")
-print(len(encoded))
-EOF
-]], vim.fn.json_encode(messages)), true)
+    local ok, total_length = Utils.get_accurate_tokens(vim.fn.json_encode(messages))
 
-    local total_length = 0
-    if ok then
-        total_length = tonumber(result)
-    else
+    if not ok then
         for _, message in ipairs(messages) do
             total_length = total_length + string.len(message.content)
             total_length = total_length + string.len(message.role)
