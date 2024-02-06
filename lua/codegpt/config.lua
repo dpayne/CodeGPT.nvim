@@ -1,7 +1,11 @@
 if os.getenv("OPENAI_API_KEY") ~= nil then
     vim.g["codegpt_openai_api_key"] = os.getenv("OPENAI_API_KEY")
 end
+
 vim.g["codegpt_chat_completions_url"] = "https://api.openai.com/v1/chat/completions"
+if os.getenv("OPENAI_API_ENDPOINT") ~= nil then
+    vim.g["codegpt_chat_completions_url"] = os.getenv("OPENAI_API_ENDPOINT")
+end
 
 -- alternative provider
 vim.g["codegpt_openai_api_provider"] = "OpenAI"
