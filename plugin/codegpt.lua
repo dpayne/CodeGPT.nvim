@@ -11,6 +11,9 @@ end, {
         for k in pairs(vim.g["codegpt_commands_defaults"]) do
             table.insert(cmd, k)
         end
+        for k in pairs(vim.g["codegpt_commands"] or {}) do
+            table.insert(cmd, k)
+        end
         return cmd
     end,
 })
