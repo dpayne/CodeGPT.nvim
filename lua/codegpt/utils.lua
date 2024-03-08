@@ -120,7 +120,7 @@ encoded = encoder.encode("""%s""")
 print(len(encoded))
 EOF
 ]], content), true)
-    if ok then
+    if ok and #result > 0 then
         return ok, tonumber(result)
     end
     return ok, 0
