@@ -86,7 +86,7 @@ function Utils.parse_lines(response_text)
         vim.api.nvim_err_write("ChatGPT response: \n" .. response_text .. "\n")
     end
 
-    return vim.fn.split(response_text, "\n")
+    return vim.fn.split(vim.trim(response_text), "\n")
 end
 
 function Utils.fix_indentation(bufnr, start_row, end_row, new_lines)
