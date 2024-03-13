@@ -10,6 +10,7 @@ local cmd_default = {
     system_message_template = "You are a {{language}} coding assistant.",
     user_message_template = "",
     callback_type = "replace_lines",
+    extra_params = {}, -- extra parameters sent to the API
 }
 
 CommandsList.CallbackTypes = {
@@ -38,6 +39,7 @@ CommandsList.CallbackTypes = {
 function CommandsList.get_cmd_opts(cmd)
     local opts = vim.g["codegpt_commands_defaults"][cmd]
     local user_set_opts = {}
+    local cmd_default = vim.tbl_extend("force", cmd_default, vim.g["codegpt_global_commands_defaults"])
 
     if vim.g["codegpt_commands"] ~= nil then
         user_set_opts = vim.g["codegpt_commands"][cmd]
