@@ -49,6 +49,7 @@ function OpenAIProvider.make_request(command, cmd_opts, command_args, text_selec
         max_tokens = max_tokens,
     }
 
+    request = vim.tbl_extend("force", request, cmd_opts.extra_params)
     return request
 end
 
