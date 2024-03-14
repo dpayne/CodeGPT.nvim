@@ -4,7 +4,7 @@ end
 vim.g["codegpt_chat_completions_url"] = "https://api.openai.com/v1/chat/completions"
 
 -- alternative provider
-vim.g["codegpt_llm_api_provider"] = "openai"
+vim.g["codegpt_llm_api_provider"] = vim.g["codegpt_llm_api_provider"] or "openai"
 
 -- clears visual selection after completion
 vim.g["codegpt_clear_visual_selection"] = true
