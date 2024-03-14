@@ -127,4 +127,12 @@ EOF
 end
 
 
+function Utils.remove_trailing_whitespace(lines)
+    for i, line in ipairs(lines) do
+        lines[i] = line:gsub("%s+$", "")
+    end
+    return lines
+end
+
+
 return Utils
