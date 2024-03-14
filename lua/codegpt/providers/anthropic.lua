@@ -38,7 +38,6 @@ function AnthropicProvider.make_request(command, cmd_opts, command_args, text_se
         cmd_opts)
     local messages = generate_messages(command, cmd_opts, command_args, text_selection)
     local max_tokens = get_max_tokens(cmd_opts.max_tokens, messages)
-    print("max_tokens: " .. max_tokens)
 
     local request = {
         temperature = cmd_opts.temperature or 1.0,
