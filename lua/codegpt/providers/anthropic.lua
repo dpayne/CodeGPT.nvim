@@ -55,9 +55,7 @@ end
 
 function curl_callback(response, cb)
     local status = response.status
-    print("Status: " .. status)
     local body = response.body
-    print("Body: " .. body)
     if status ~= 200 then
         body = body:gsub("%s+", " ")
         print("Error: " .. status .. " " .. body)
@@ -70,9 +68,7 @@ function curl_callback(response, cb)
     end
 
     vim.schedule_wrap(function(msg)
-        print("Msg: " .. msg)
         local json = vim.fn.json_decode(msg)
-        print("Json: " .. vim.inspect(json))
         AnthropicProvider.handle_response(json, cb)
     end)(body)
 
