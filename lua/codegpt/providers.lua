@@ -2,6 +2,7 @@ local OpenAIProvider = require("codegpt.providers.openai")
 local AzureProvider = require("codegpt.providers.azure")
 local AnthropicProvider = require("codegpt.providers.anthropic")
 local OllaMaProvider = require("codegpt.providers.ollama")
+local GroqProvider = require("codegpt.providers.groq")
 
 Providers = {}
 
@@ -15,6 +16,8 @@ function Providers.get_provider()
         return AnthropicProvider
     elseif provider == "ollama" then
         return OllaMaProvider
+    elseif provider == "groq" then
+        return GroqProvider
     else
         error("Provider not found: " .. provider)
     end
