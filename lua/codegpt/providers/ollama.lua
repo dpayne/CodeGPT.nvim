@@ -5,6 +5,24 @@ local Api = require("codegpt.api")
 
 OllaMaProvider = {}
 
+
+local function generate_messages(command, cmd_opts, command_args, text_selection)
+    local system_message = Render.render(command, cmd_opts.system_message_template, command_args, text_selection,
+        cmd_opts)
+    local user_message = Render.render(command, cmd_opts.user_message_template, command_args, text_selection, cmd_opts)
+
+    local messages = {}
+    if system_message ~= nil and system_message ~= "" then
+        table.insert(messages, { role = "system", content = system_message })
+    end
+
+    if user_message ~= nil and user_message ~= "" then
+        table.insert(messages, { role = "user", content = user_message })
+    end
+
+    return messages
+end
+
 local function get_max_tokens(max_tokens, prompt)
     local ok, total_length = Utils.get_accurate_tokens(prompt)
 
@@ -17,14 +35,14 @@ end
 
 function OllaMaProvider.make_request(command, cmd_opts, command_args, text_selection)
     -- NOTE Do not use the system message for now
-    local prompt = Render.render(command, cmd_opts.user_message_template, command_args, text_selection, cmd_opts)
+    local messages = generate_messages(command, cmd_opts, command_args, text_selection)
     local max_tokens = get_max_tokens(cmd_opts.max_tokens, prompt)
 
     local request = {
         temperature = cmd_opts.temperature,
-        maxTokens = max_tokens,
+        max_tokens= max_tokens,
         model = cmd_opts.model,
-        prompt = prompt,
+        messages = messages,
         stream = false,
     }
 
@@ -40,10 +58,10 @@ function OllaMaProvider.handle_response(json, cb)
         print("Response empty")
     elseif json.done == nil or json.done == false then
         print("Response is incomplete " .. vim.fn.json_encode(json))
-    elseif json.response == nil then
+    elseif json.message.content == nil then
         print("Error: No response")
     else
-        local response_text = json.response
+        local response_text = json.message.content
 
         if response_text ~= nil then
             if type(response_text) ~= "string" or response_text == "" then
@@ -86,7 +104,7 @@ end
 
 function OllaMaProvider.make_call(payload, cb)
     local payload_str = vim.fn.json_encode(payload)
-    local url = "http://localhost:11434/api/generate"
+    local url = "http://localhost:11434/api/chat"
     local headers = OllaMaProvider.make_headers()
     Api.run_started_hook()
     curl.post(url, {
