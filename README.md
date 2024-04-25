@@ -101,15 +101,35 @@ The above, overrides the message template for the `completion` command.
 
 A full list of overrides
 
-| name | default | description |
-|------|---------|-------------|
-| model | "gpt-3.5-turbo" | The model to use. |
-| max_tokens | 4096 | The maximum number of tokens to use including the prompt tokens. |
-| temperature | 0.6 | 0 -> 1, what sampling temperature to use. |
-| system_message_template | "" | Helps set the behavior of the assistant. |
-| user_message_template | "" | Instructs the assistant. |
-| callback_type | "replace_lines" | Controls what the plugin does with the response |
-| language_instructions | {} | A table of filetype => instructions. The current buffer's filetype is used in this lookup. This is useful trigger different instructions for different languages. |
+| name                    | default         | description                                                                                                                                                       |
+|-------------------------|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| model                   | "gpt-3.5-turbo" | The model to use.                                                                                                                                                 |
+| max_tokens              | 4096            | The maximum number of tokens to use including the prompt tokens.                                                                                                  |
+| temperature             | 0.6             | 0 -> 1, what sampling temperature to use.                                                                                                                         |
+| system_message_template | ""              | Helps set the behavior of the assistant.                                                                                                                          |
+| user_message_template   | ""              | Instructs the assistant.                                                                                                                                          |
+| callback_type           | "replace_lines" | Controls what the plugin does with the response                                                                                                                   |
+| language_instructions   | {}              | A table of filetype => instructions. The current buffer's filetype is used in this lookup. This is useful trigger different instructions for different languages. |
+| extra_params            | {}              | A table of custom parameters to be sent to the API.                                                                                                               |
+
+
+
+### Overriding the global defaults
+
+The overrides can be set globally using `vim.g["codegpt_global_commands_defaults"]`. This can be useful to setup a custom configuration for APIs that emulate OpenAI such as LocalAI.
+
+```lua
+    vim.g["codegpt_global_commands_defaults"] = { 
+        model = "mixtral",
+        max_tokens = 4096,
+        temperature = 0.4,
+        -- extra_parms = { -- optional list of extra parameters to send to the API
+        --     presence_penalty = 1,
+        --     frequency_penalty= 1
+        -- }
+    }
+```
+
 
 
 #### Templates
