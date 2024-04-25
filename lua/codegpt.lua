@@ -19,19 +19,23 @@ function CodeGptModule.run_cmd(opts)
 
     local command = opts.fargs[1]
 
-    if text_selection ~= "" and command_args ~= "" then
+    if command_args ~= "" then
         local cmd_opts = CommandsList.get_cmd_opts(command)
         if cmd_opts ~= nil and has_command_args(cmd_opts) then
-            command_args = table.concat(opts.fargs, " ", 2)
+            if cmd_opts.allow_empty_text_selection == false and text_selection == "" then
+                command = "chat"
+            else
+                command_args = table.concat(opts.fargs, " ", 2)
+            end
         elseif cmd_opts and 1 == #opts.fargs then
             command_args = ""
+        elseif text_selection == "" then
+            command = "chat"
         else
             command = "code_edit"
         end
     elseif text_selection ~= "" and command_args == "" then
         command = "completion"
-    elseif text_selection == "" and command_args ~= "" then
-        command = "chat"
     end
 
     if command == nil or command == "" then

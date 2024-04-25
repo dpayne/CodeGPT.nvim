@@ -10,6 +10,7 @@ local cmd_default = {
     system_message_template = "You are a {{language}} coding assistant.",
     user_message_template = "",
     callback_type = "replace_lines",
+    allow_empty_text_selection = false,
     extra_params = {}, -- extra parameters sent to the API
 }
 

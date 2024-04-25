@@ -4,9 +4,9 @@ end
 vim.g["codegpt_chat_completions_url"] = "https://api.openai.com/v1/chat/completions"
 
 -- Read old config if it exists
--- if vim.g["codegpt_openai_api_provider"] and #vim.g["codegpt_openai_api_provider"] > 0 then
---     vim.g["codegpt_api_provider"] = vim.g["codegpt_openai_api_provider"]
--- end
+if vim.g["codegpt_openai_api_provider"] and #vim.g["codegpt_openai_api_provider"] > 0 then
+    vim.g["codegpt_api_provider"] = vim.g["codegpt_openai_api_provider"]
+end
 
 -- alternative provider
 vim.g["codegpt_api_provider"] = vim.g["codegpt_api_provider"] or "openai"
@@ -47,6 +47,15 @@ vim.g["codegpt_commands_defaults"] = {
             cpp = "Use modern C++ features.",
             java = "Use modern Java syntax. Use var when applicable.",
         },
+    },
+    ["generate"] = {
+        user_message_template =
+        "Write code in {{language}} using best practices and write really good documentation. {{language_instructions}} Only return the code snippet and nothing else. {{command_args}}",
+        language_instructions = {
+            cpp = "Use modern C++ features.",
+            java = "Use modern Java syntax. Use var when applicable.",
+        },
+        allow_empty_text_selection = true,
     },
     ["code_edit"] = {
         user_message_template =
