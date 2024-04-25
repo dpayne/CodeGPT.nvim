@@ -341,7 +341,7 @@ vim.g["codegpt_vertical_popup_size"] = "20%"
 -- Open API key and api endpoint
 vim.g["codegpt_openai_api_key"] = os.getenv("OPENAI_API_KEY")
 vim.g["codegpt_chat_completions_url"] = "https://api.openai.com/v1/chat/completions"
-vim.g["codegpt_openai_api_provider"] = "OpenAI" -- or Azure
+vim.g["codegpt_llm_api_provider"] = "OpenAI" -- or Azure
 
 -- clears visual selection after completion
 vim.g["codegpt_clear_visual_selection"] = true

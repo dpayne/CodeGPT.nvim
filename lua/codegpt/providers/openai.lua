@@ -1,5 +1,7 @@
+local curl = require("plenary.curl")
 local Render = require("codegpt.template_render")
 local Utils = require("codegpt.utils")
+local Api = require("codegpt.api")
 
 OpenAIProvider = {}
 
@@ -53,6 +55,28 @@ function OpenAIProvider.make_request(command, cmd_opts, command_args, text_selec
     return request
 end
 
+local function curl_callback(response, cb)
+    local status = response.status
+    local body = response.body
+    if status ~= 200 then
+        body = body:gsub("%s+", " ")
+        print("Error: " .. status .. " " .. body)
+        return
+    end
+
+    if body == nil or body == "" then
+        print("Error: No body")
+        return
+    end
+
+    vim.schedule_wrap(function(msg)
+        local json = vim.fn.json_decode(msg)
+        OpenAIProvider.handle_response(json, cb)
+    end)(body)
+
+    Api.run_finished_hook()
+end
+
 function OpenAIProvider.make_headers()
     local token = vim.g["codegpt_openai_api_key"]
     if not token then
@@ -89,6 +113,24 @@ function OpenAIProvider.handle_response(json, cb)
             print("Error: No message")
         end
     end
+end
+
+function OpenAIProvider.make_call(payload, cb)
+    local payload_str = vim.fn.json_encode(payload)
+    local url = "https://api.openai.com/v1/chat/completions"
+    local headers = OpenAIProvider.make_headers()
+    Api.run_started_hook()
+    curl.post(url, {
+        body = payload_str,
+        headers = headers,
+        callback = function(response)
+            curl_callback(response, cb)
+        end,
+        on_error = function(err)
+            print('Error:', err.message)
+            Api.run_finished_hook()
+        end,
+    })
 end
 
 return OpenAIProvider
