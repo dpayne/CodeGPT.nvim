@@ -40,7 +40,10 @@ CommandsList.CallbackTypes = {
 function CommandsList.get_cmd_opts(cmd)
     local opts = vim.g["codegpt_commands_defaults"][cmd]
     local user_set_opts = {}
-    local cmd_default = vim.tbl_extend("force", cmd_default, vim.g["codegpt_global_commands_defaults"])
+
+    if vim.g["codegpt_global_commands_defaults"] ~= nil then
+        cmd_default = vim.tbl_extend("force", cmd_default, vim.g["codegpt_global_commands_defaults"])
+    end
 
     if vim.g["codegpt_commands"] ~= nil then
         user_set_opts = vim.g["codegpt_commands"][cmd]
@@ -56,7 +59,7 @@ function CommandsList.get_cmd_opts(cmd)
         -- merge language_instructions
         if opts.language_instructions ~= nil and user_set_opts.language_instructions ~= nil then
             user_set_opts.language_instructions =
-            vim.tbl_extend("force", opts.language_instructions, user_set_opts.language_instructions)
+                vim.tbl_extend("force", opts.language_instructions, user_set_opts.language_instructions)
         end
     end
 

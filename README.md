@@ -119,7 +119,7 @@ A full list of overrides
 The overrides can be set globally using `vim.g["codegpt_global_commands_defaults"]`. This can be useful to setup a custom configuration for APIs that emulate OpenAI such as LocalAI.
 
 ```lua
-    vim.g["codegpt_global_commands_defaults"] = { 
+    vim.g["codegpt_global_commands_defaults"] = {
         model = "mixtral",
         max_tokens = 4096,
         temperature = 0.4,
@@ -341,7 +341,7 @@ vim.g["codegpt_vertical_popup_size"] = "20%"
 -- Open API key and api endpoint
 vim.g["codegpt_openai_api_key"] = os.getenv("OPENAI_API_KEY")
 vim.g["codegpt_chat_completions_url"] = "https://api.openai.com/v1/chat/completions"
-vim.g["codegpt_llm_api_provider"] = "OpenAI" -- or Azure
+vim.g["codegpt_api_provider"] = "OpenAI" -- or Azure
 
 -- clears visual selection after completion
 vim.g["codegpt_clear_visual_selection"] = true
