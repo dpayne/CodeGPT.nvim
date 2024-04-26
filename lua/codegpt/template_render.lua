@@ -19,6 +19,12 @@ local function safe_replace(template, key, value)
     if type(value) == "table" then
         value = table.concat(value, "\n")
     end
+
+    if value then
+        -- Replace '%' with '%%' to escape it in the template
+        value = value:gsub("%%", "%%%%")
+    end
+
     return template:gsub(key, value)
 end
 
