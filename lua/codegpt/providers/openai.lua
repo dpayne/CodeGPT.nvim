@@ -117,7 +117,7 @@ end
 
 function OpenAIProvider.make_call(payload, cb)
     local payload_str = vim.fn.json_encode(payload)
-    local url = "https://api.openai.com/v1/chat/completions"
+    local url = vim.g["codegpt_chat_completions_url"]
     local headers = OpenAIProvider.make_headers()
     Api.run_started_hook()
     curl.post(url, {
