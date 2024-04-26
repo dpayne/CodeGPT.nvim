@@ -13,8 +13,8 @@ function Providers.get_provider()
         return AzureProvider
     elseif provider == "anthropic" then
         return AnthropicProvider
-  	elseif provider == "ollama" then
-  		return OllaMaProvider
+    elseif provider == "ollama" then
+        return OllaMaProvider
     else
         error("Provider not found: " .. provider)
     end
