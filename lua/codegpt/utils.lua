@@ -111,7 +111,7 @@ end
 
 function Utils.get_accurate_tokens(content)
     local ok, result = pcall(
-        vim.api.nvim_exec,
+        vim.api.nvim_exec2,
         string.format([[
 python3 << EOF
 import tiktoken
