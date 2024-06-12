@@ -74,9 +74,19 @@ local function contains_code_block(lines2)
     return false
 end
 
+local function remove_indentation(code_block)
+    local new_code_block = {}
+    for _, line in ipairs(code_block) do
+        -- Remove leading whitespace (indentation)
+        table.insert(new_code_block, line:match("^%s*(.*)$"))
+    end
+    return new_code_block
+end
+
 function Utils.trim_to_code_block(lines)
     if contains_code_block(lines) then
-        return get_code_block(lines)
+        local code_block = get_code_block(lines)
+        return remove_indentation(code_block)
     end
     return lines
 end
