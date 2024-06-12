@@ -74,9 +74,29 @@ local function contains_code_block(lines2)
     return false
 end
 
+local function deindent_code_block(code_block)
+    local min_indentation = math.huge
+
+    -- Find the minimum indentation
+    for _, line in ipairs(code_block) do
+        local indentation = line:match("^(%s*)")
+        if #indentation < min_indentation then
+            min_indentation = #indentation
+        end
+    end
+
+    -- Remove the minimum indentation from all lines
+    for i, line in ipairs(code_block) do
+        code_block[i] = line:sub(min_indentation + 1)
+    end
+
+    return code_block
+end
+
 function Utils.trim_to_code_block(lines)
     if contains_code_block(lines) then
-        return get_code_block(lines)
+        local code_block = get_code_block(lines)
+        return deindent_code_block(code_block)
     end
     return lines
 end
