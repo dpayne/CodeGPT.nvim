@@ -104,7 +104,8 @@ end
 
 function OllaMaProvider.make_call(payload, cb)
     local payload_str = vim.fn.json_encode(payload)
-    local url = "http://localhost:11434/api/chat"
+    local default_url =  "http://localhost:11434/api/chat"
+    local url = vim.g["codegpt_chat_completions_url"] or default_url
     local headers = OllaMaProvider.make_headers()
     Api.run_started_hook()
     curl.post(url, {
