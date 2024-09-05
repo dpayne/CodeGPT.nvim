@@ -23,7 +23,7 @@ local function generate_messages(command, cmd_opts, command_args, text_selection
 end
 
 
-local function get_max_tokens(max_tokens, messages)
+local function check_context_length(max_context_length, messages)
     local ok, total_length = Utils.get_accurate_tokens(vim.fn.json_encode(messages))
 
     if not ok then
@@ -33,16 +33,19 @@ local function get_max_tokens(max_tokens, messages)
         end
     end
 
-    if total_length >= max_tokens then
-        error("Total length of messages exceeds max_tokens: " .. total_length .. " > " .. max_tokens)
+    if total_length >= max_context_length then
+        error("Total length of messages exceeds max context length: " .. total_length .. " > " .. max_context_length)
     end
 
-    return max_tokens - total_length
 end
 
 function GroqProvider.make_request(command, cmd_opts, command_args, text_selection)
     local messages = generate_messages(command, cmd_opts, command_args, text_selection)
-    local max_tokens = get_max_tokens(cmd_opts.max_tokens, messages)
+
+    local max_context_length = cmd_opts.max_context_length or 128 * 1024
+    local max_tokens = cmd_opts.max_tokens or 4096
+
+    check_context_length(max_context_length, messages)
 
     local request = {
         temperature = cmd_opts.temperature,
