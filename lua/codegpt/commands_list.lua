@@ -12,6 +12,10 @@ local cmd_default = {
     callback_type = "replace_lines",
     allow_empty_text_selection = false,
     extra_params = {}, -- extra parameters sent to the API
+
+    check_context_length = false,
+    max_context_length = 128 * 1024,
+    max_tokens_include_context = true,
 }
 
 CommandsList.CallbackTypes = {
