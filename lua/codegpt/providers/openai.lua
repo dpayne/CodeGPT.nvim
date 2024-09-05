@@ -22,7 +22,7 @@ local function generate_messages(command, cmd_opts, command_args, text_selection
     return messages
 end
 
-local function get_max_tokens(max_tokens, messages)
+local function get_max_output_tokens(max_tokens, messages)
     local ok, total_length = Utils.get_accurate_tokens(vim.fn.json_encode(messages))
 
     if not ok then
@@ -39,9 +39,40 @@ local function get_max_tokens(max_tokens, messages)
     return max_tokens - total_length
 end
 
+local function fail_if_exceed_context_window(max_context_length, messages)
+    local ok, total_length = Utils.get_accurate_tokens(vim.fn.json_encode(messages))
+
+    if not ok then
+        for _, message in ipairs(messages) do
+            total_length = total_length + string.len(message.content)
+            total_length = total_length + string.len(message.role)
+        end
+    end
+
+    if total_length >= max_context_length then
+        error("Total length of messages exceeds max_tokens: " .. total_length .. " > " .. max_context_length)
+    end
+end
+
 function OpenAIProvider.make_request(command, cmd_opts, command_args, text_selection)
     local messages = generate_messages(command, cmd_opts, command_args, text_selection)
-    local max_tokens = get_max_tokens(cmd_opts.max_tokens, messages)
+
+    local max_tokens = cmd_opts.max_tokens or 4096
+    local max_tokens_include_context = cmd_opts.max_tokens_include_context or true
+    local max_context_length = cmd_opts.max_context_length or 128 * 1024
+    local check_context_length = cmd_opts.check_context_length or false
+
+    -- After gpt-4o, context is 128k+ while max output length is 4k+
+    -- Add this check here for backward compatibility and allow use to use the newer models
+    if max_tokens_include_context then
+        max_tokens = get_max_output_tokens(cmd_opts.max_tokens, messages)
+    else
+        max_tokens = cmd_opts.max_tokens
+    end
+
+    if check_context_length then
+        fail_if_exceed_context_window(max_tokens, messages)
+    end
 
     local request = {
         temperature = cmd_opts.temperature,
