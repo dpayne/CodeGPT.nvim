@@ -7,24 +7,31 @@ OllaMaProvider = {}
 
 
 local function generate_messages(command, cmd_opts, command_args, text_selection)
-    local system_message = Render.render(command, cmd_opts.system_message_template, command_args, text_selection,
-        cmd_opts)
-    local user_message = Render.render(command, cmd_opts.user_message_template, command_args, text_selection, cmd_opts)
+    local prompt_message = ""
+    if cmd_opts.system_message_template ~= nil then
+        prompt_message = "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n" ..
+            cmd_opts.system_message_template .. "<|eot_id|>"
+    end
+    if cmd_opts.user_message_template ~= nil then
+        prompt_message = prompt_message .. "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\n" ..
+            cmd_opts.user_message_template .. "<|eot_id|>\n\n"
+    end
+    prompt_message = prompt_message ..
+        "<|start_header_id|>assistant<|end_header_id|>"
+
+    prompt_message = Render.render(command, prompt_message, command_args, text_selection, cmd_opts)
 
     local messages = {}
-    if system_message ~= nil and system_message ~= "" then
-        table.insert(messages, { role = "system", content = system_message })
-    end
 
-    if user_message ~= nil and user_message ~= "" then
-        table.insert(messages, { role = "user", content = user_message })
+    if prompt_message ~= nil and prompt_message ~= "" then
+        table.insert(messages, { role = "user", content = prompt_message })
     end
 
     return messages
 end
 
 local function get_max_tokens(max_tokens, prompt)
-    local ok, total_length = Utils.get_accurate_tokens(prompt)
+    local _, total_length = Utils.get_accurate_tokens(prompt)
 
     if total_length >= max_tokens then
         error("Total length of messages exceeds max_tokens: " .. total_length .. " > " .. max_tokens)
@@ -40,7 +47,7 @@ function OllaMaProvider.make_request(command, cmd_opts, command_args, text_selec
 
     local request = {
         temperature = cmd_opts.temperature,
-        max_tokens= max_tokens,
+        max_tokens = max_tokens,
         model = cmd_opts.model,
         messages = messages,
         stream = false,
@@ -53,7 +60,7 @@ function OllaMaProvider.make_headers()
     return { ["Content-Type"] = "application/json" }
 end
 
-function OllaMaProvider.handle_response(json, cb)
+function OllaMaProvider.handle_response(json, text_selection, cb)
     if json == nil then
         print("Response empty")
     elseif json.done == nil or json.done == false then
@@ -62,6 +69,11 @@ function OllaMaProvider.handle_response(json, cb)
         print("Error: No response")
     else
         local response_text = json.message.content
+        local ok, parsed_json = pcall(vim.fn.json_decode, response_text)
+        if ok and parsed_json ~= nil and parsed_json.parameters ~= nil and parsed_json.parameters.code ~= nil then
+            response_text = parsed_json.parameters.code
+            response_text = Utils.concat_if_overlap(text_selection, response_text)
+        end
 
         if response_text ~= nil then
             if type(response_text) ~= "string" or response_text == "" then
@@ -80,7 +92,7 @@ function OllaMaProvider.handle_response(json, cb)
     end
 end
 
-local function curl_callback(response, cb)
+local function curl_callback(response, text_selection, cb)
     local status = response.status
     local body = response.body
     if status ~= 200 then
@@ -96,15 +108,15 @@ local function curl_callback(response, cb)
 
     vim.schedule_wrap(function(msg)
         local json = vim.fn.json_decode(msg)
-        OllaMaProvider.handle_response(json, cb)
+        OllaMaProvider.handle_response(json, text_selection, cb)
     end)(body)
 
     Api.run_finished_hook()
 end
 
-function OllaMaProvider.make_call(payload, cb)
+function OllaMaProvider.make_call(payload, text_selection, cb)
     local payload_str = vim.fn.json_encode(payload)
-    local default_url =  "http://localhost:11434/api/chat"
+    local default_url = "http://localhost:11434/api/chat"
     local url = vim.g["codegpt_chat_completions_url"] or default_url
     local headers = OllaMaProvider.make_headers()
     Api.run_started_hook()
@@ -112,7 +124,7 @@ function OllaMaProvider.make_call(payload, cb)
         body = payload_str,
         headers = headers,
         callback = function(response)
-            curl_callback(response, cb)
+            curl_callback(response, text_selection, cb)
         end,
         on_error = function(err)
             print('Curl error:', err.message)

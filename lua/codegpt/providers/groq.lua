@@ -115,7 +115,7 @@ function GroqProvider.handle_response(json, cb)
     end
 end
 
-function GroqProvider.make_call(payload, cb)
+function GroqProvider.make_call(payload, text_selection, cb)
     local payload_str = vim.fn.json_encode(payload)
     local url = "https://api.groq.com/openai/v1/chat/completions"
     local headers = GroqProvider.make_headers()

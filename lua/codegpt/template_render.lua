@@ -40,6 +40,7 @@ function Render.render(cmd, template, command_args, text_selection, cmd_opts)
     template = safe_replace(template, "{{language}}", language)
     template = safe_replace(template, "{{command_args}}", command_args)
     template = safe_replace(template, "{{language_instructions}}", language_instructions)
+    template = safe_replace(template, "{{filename}}", vim.fn.expand("%:t"))
     return template
 end
 

@@ -9,7 +9,7 @@ if vim.g["codegpt_openai_api_provider"] and #vim.g["codegpt_openai_api_provider"
 end
 
 -- alternative provider
-vim.g["codegpt_api_provider"] = vim.g["codegpt_api_provider"] or "openai"
+vim.g["codegpt_api_provider"] = vim.g["codegpt_api_provider"] or "ollama"
 
 -- clears visual selection after completion
 vim.g["codegpt_clear_visual_selection"] = true
@@ -41,12 +41,13 @@ vim.g["codegpt_vertical_popup_size"] = "20%"
 
 vim.g["codegpt_commands_defaults"] = {
     ["completion"] = {
-        user_message_template =
-        "I have the following {{language}} code snippet: ```{{filetype}}\n{{text_selection}}```\nComplete the rest. Use best practices and write really good documentation. {{language_instructions}} Only return the code snippet and nothing else.",
+        system_message_template =
+        "You are a C++ coding assistant. You use best practices and write good documentation. {{language_instructions}} You will be given a C++ code snippet from the file {{filename}}, return the completed code.",
+        user_message_template = "{{text_selection}}",
         language_instructions = {
-            cpp = "Use modern C++ features.",
+            cpp = "Use modern C++ features and syntax.",
             java = "Use modern Java syntax. Use var when applicable.",
-        },
+        }
     },
     ["generate"] = {
         user_message_template =

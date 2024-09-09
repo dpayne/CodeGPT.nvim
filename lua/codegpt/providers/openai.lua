@@ -15,8 +15,24 @@ local function generate_messages(command, cmd_opts, command_args, text_selection
         table.insert(messages, { role = "system", content = system_message })
     end
 
+    local response_fmt = {
+        type = "json_schema",
+        json_schema = {
+            name = "code_completion",
+            schema = {
+                type = "object",
+                properties = {
+                    code = { type = "string" },
+                },
+                required = { "code" },
+                additionalProperties = false,
+            },
+            strict = true,
+        },
+    };
+
     if user_message ~= nil and user_message ~= "" then
-        table.insert(messages, { role = "user", content = user_message })
+        table.insert(messages, { role = "user", content = user_message, response_format = response_fmt })
     end
 
     return messages
@@ -55,7 +71,7 @@ function OpenAIProvider.make_request(command, cmd_opts, command_args, text_selec
     return request
 end
 
-local function curl_callback(response, cb)
+local function curl_callback(response, text_selection, cb)
     local status = response.status
     local body = response.body
     if status ~= 200 then
@@ -71,7 +87,7 @@ local function curl_callback(response, cb)
 
     vim.schedule_wrap(function(msg)
         local json = vim.fn.json_decode(msg)
-        OpenAIProvider.handle_response(json, cb)
+        OpenAIProvider.handle_response(json, text_selection, cb)
     end)(body)
 
     Api.run_finished_hook()
@@ -88,7 +104,7 @@ function OpenAIProvider.make_headers()
     return { Content_Type = "application/json", Authorization = "Bearer " .. token }
 end
 
-function OpenAIProvider.handle_response(json, cb)
+function OpenAIProvider.handle_response(json, text_selection, cb)
     if json == nil then
         print("Response empty")
     elseif json.error then
@@ -97,6 +113,11 @@ function OpenAIProvider.handle_response(json, cb)
         print("Error: " .. vim.fn.json_encode(json))
     else
         local response_text = json.choices[1].message.content
+        local ok, parsed_json = pcall(vim.fn.json_decode, response_text)
+        if ok and parsed_json ~= nil and parsed_json.code ~= nil then
+            response_text = parsed_json.code
+            response_text = Utils.concat_if_overlap(text_selection, response_text)
+        end
 
         if response_text ~= nil then
             if type(response_text) ~= "string" or response_text == "" then
@@ -115,7 +136,7 @@ function OpenAIProvider.handle_response(json, cb)
     end
 end
 
-function OpenAIProvider.make_call(payload, cb)
+function OpenAIProvider.make_call(payload, text_selection, cb)
     local payload_str = vim.fn.json_encode(payload)
     local url = vim.g["codegpt_chat_completions_url"]
     local headers = OpenAIProvider.make_headers()
@@ -124,7 +145,7 @@ function OpenAIProvider.make_call(payload, cb)
         body = payload_str,
         headers = headers,
         callback = function(response)
-            curl_callback(response, cb)
+            curl_callback(response, text_selection, cb)
         end,
         on_error = function(err)
             print('Error:', err.message)

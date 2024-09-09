@@ -191,7 +191,7 @@ function AzureProvider.handle_response(json, cb)
     end
 end
 
-function AzureProvider.make_call(payload, cb)
+function AzureProvider.make_call(payload, text_selection, cb)
     local payload_str = vim.fn.json_encode(payload)
     local url = vim.g["codegpt_chat_completions_url"]
     local headers = AzureProvider.make_headers()

@@ -126,7 +126,6 @@ EOF
     return ok, 0
 end
 
-
 function Utils.remove_trailing_whitespace(lines)
     for i, line in ipairs(lines) do
         lines[i] = line:gsub("%s+$", "")
@@ -134,5 +133,96 @@ function Utils.remove_trailing_whitespace(lines)
     return lines
 end
 
+function Utils.merge_overlapping_lines(str1, str2)
+    -- Split string into lines
+    local function split_lines(s)
+        local lines = {}
+        for line in s:gmatch("([^\r\n]+)") do
+            table.insert(lines, line)
+        end
+        return lines
+    end
+
+    -- Find the overlapping part between two lines
+    local function find_overlap(line1, line2)
+        for i = 1, #line1 do
+            local suffix = line1:sub(i)
+            if line2:sub(1, #suffix) == suffix then
+                return suffix
+            end
+        end
+        return ""
+    end
+
+    -- Merge two sets of lines with overlap consideration
+    local function merge_lines(lines1, lines2)
+        local merged_lines = {}
+        for i, line in ipairs(lines1) do
+            table.insert(merged_lines, line)
+        end
+
+        -- Check overlap between last line of lines1 and first line of lines2
+        local overlap = find_overlap(lines1[#lines1], lines2[1])
+        if overlap ~= "" then
+            merged_lines[#merged_lines] = lines1[#lines1]:sub(1, #lines1[#lines1] - #overlap) .. lines2[1]
+        else
+            table.insert(merged_lines, lines2[1])
+        end
+
+        -- Add the rest of the lines from lines2
+        for i = 2, #lines2 do
+            table.insert(merged_lines, lines2[i])
+        end
+
+        return table.concat(merged_lines, "\n")
+    end
+
+    -- Split str1 and str2 into lines
+    local lines1 = split_lines(str1)
+    local lines2 = split_lines(str2)
+
+    -- Merge the lines and return the result
+    return merge_lines(lines1, lines2)
+end
+
+function Utils.concat_if_overlap(str1, str2)
+    -- Split the strings into lines
+    local function split_lines(s)
+        local lines = {}
+        for line in s:gmatch("([^\r\n]+)") do
+            table.insert(lines, line)
+        end
+        return lines
+    end
+
+    local function find_overlap(line1, line2)
+        for i = 1, #line1 do
+            local suffix = line1:sub(i)
+            if line2:sub(1, #suffix) == suffix then
+                return suffix
+            end
+        end
+        return ""
+    end
+
+    -- Split both strings into lines
+    local lines1 = split_lines(str1)
+    local lines2 = split_lines(str2)
+
+    -- Get the last line of str1 and the first line of str2
+    local last_line_str1 = lines1[#lines1]
+    local first_line_str2 = lines2[1]
+
+    -- Check if there is an overlap
+    local overlap = find_overlap(last_line_str1, first_line_str2)
+
+    if overlap ~= "" then
+        -- If there is overlap, merge the lines
+        return merge_overlapping_lines(str1, str2)
+    else
+        -- If there is no overlap, return str2
+        return str2
+    end
+end
 
 return Utils
