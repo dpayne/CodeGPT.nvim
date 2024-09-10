@@ -22,7 +22,7 @@ local function generate_messages(command, cmd_opts, command_args, text_selection
     return messages
 end
 
-local function get_max_output_tokens(max_tokens, messages)
+local function get_max_tokens(max_tokens, messages)
     local ok, total_length = Utils.get_accurate_tokens(vim.fn.json_encode(messages))
 
     if not ok then
