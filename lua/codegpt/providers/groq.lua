@@ -40,33 +40,15 @@ local function get_max_output_tokens(max_tokens, messages)
 end
 
 
-local function fail_if_exceed_context_window(max_context_length, messages)
-    local ok, total_length = Utils.get_accurate_tokens(vim.fn.json_encode(messages))
-
-    if not ok then
-        for _, message in ipairs(messages) do
-            total_length = total_length + string.len(message.content)
-            total_length = total_length + string.len(message.role)
-        end
-    end
-
-    if total_length >= max_context_length then
-        error("Total length of messages exceeds max context length: " .. total_length .. " > " .. max_context_length)
-    end
-
-end
-
 function GroqProvider.make_request(command, cmd_opts, command_args, text_selection)
     local messages = generate_messages(command, cmd_opts, command_args, text_selection)
 
-    if cmd_opts.max_tokens_include_context then
-        max_tokens = get_max_output_tokens(cmd_opts.max_tokens, messages)
+    local max_tokens = cmd_opts.max_tokens
+    if cmd_opts.max_output_tokens ~= nil then
+        Utils.fail_if_exceed_context_window(cmd_opts.max_tokens, messages)
+        max_tokens = cmd_opts.max_output_tokens
     else
-        max_tokens = cmd_opts.max_tokens
-    end
-
-    if cmd_opts.check_context_length then
-        fail_if_exceed_context_window(cmd_opts.max_context_length, messages)
+        max_tokens = get_max_tokens(cmd_opts.max_tokens, messages)
     end
 
     local request = {

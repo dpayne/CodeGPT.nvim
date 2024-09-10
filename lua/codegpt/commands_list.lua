@@ -13,9 +13,9 @@ local cmd_default = {
     allow_empty_text_selection = false,
     extra_params = {}, -- extra parameters sent to the API
 
-    check_context_length = false,
-    max_context_length = 128 * 1024,
-    max_tokens_include_context = true,
+    -- Newer models have longer limit for input tokens and shorter limit for output tokens
+    -- Use this value for output tokens limit, and `max_tokens` for input tokens limit
+    max_output_tokens = nil,
 }
 
 CommandsList.CallbackTypes = {

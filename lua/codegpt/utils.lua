@@ -134,5 +134,21 @@ function Utils.remove_trailing_whitespace(lines)
     return lines
 end
 
+function Utils.fail_if_exceed_context_window(max_context_length, messages)
+    local ok, total_length = Utils.get_accurate_tokens(vim.fn.json_encode(messages))
+
+    if not ok then
+        for _, message in ipairs(messages) do
+            total_length = total_length + string.len(message.content)
+            total_length = total_length + string.len(message.role)
+        end
+    end
+
+    if total_length >= max_context_length then
+        error("Total length of messages exceeds max context length: " .. total_length .. " > " .. max_context_length)
+    end
+
+end
+
 
 return Utils
