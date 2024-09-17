@@ -12,6 +12,10 @@ local cmd_default = {
     callback_type = "replace_lines",
     allow_empty_text_selection = false,
     extra_params = {}, -- extra parameters sent to the API
+
+    -- Newer models have longer limit for input tokens and shorter limit for output tokens
+    -- Use this value for output tokens limit, and `max_tokens` for input tokens limit
+    max_output_tokens = nil,
 }
 
 CommandsList.CallbackTypes = {

@@ -41,7 +41,14 @@ end
 
 function OpenAIProvider.make_request(command, cmd_opts, command_args, text_selection)
     local messages = generate_messages(command, cmd_opts, command_args, text_selection)
-    local max_tokens = get_max_tokens(cmd_opts.max_tokens, messages)
+
+    local max_tokens = cmd_opts.max_tokens
+    if cmd_opts.max_output_tokens ~= nil then
+        Utils.fail_if_exceed_context_window(cmd_opts.max_tokens, messages)
+        max_tokens = cmd_opts.max_output_tokens
+    else
+        max_tokens = get_max_tokens(cmd_opts.max_tokens, messages)
+    end
 
     local request = {
         temperature = cmd_opts.temperature,
